@@ -1,7 +1,7 @@
+// components/DocumentSummary.tsx
 "use client";
 
 import { useState, useRef } from "react";
-import Image from "next/image";
 
 export default function DocumentSummary() {
   const [textInput, setTextInput] = useState("");
@@ -45,8 +45,13 @@ export default function DocumentSummary() {
 
       const data = await response.json();
       setSummary(data.summary);
-    } catch (error: any) {
-      setSummary(`Error: ${error.message}`);
+    } catch (error: unknown) {
+      // Corrected: `any` to `unknown`
+      let errorMessage = "An unknown error occurred.";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      setSummary(`Error: ${errorMessage}`);
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +73,7 @@ export default function DocumentSummary() {
               value={textInput}
               onChange={(e) => {
                 setTextInput(e.target.value);
-                setFile(null); // Clear file when text is entered
+                setFile(null);
               }}
               rows={6}
               className="w-full p-2 rounded-md bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -80,13 +85,13 @@ export default function DocumentSummary() {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="bg-gray-700 px-2 text-gray-400">
-                  Or upload a PDF/DOC file
+                  Or upload a PDF file
                 </span>
               </div>
             </div>
             <input
               type="file"
-              accept=".pdf,.doc,.docx"
+              accept=".pdf"
               ref={fileInputRef}
               onChange={handleFileChange}
               className="hidden"

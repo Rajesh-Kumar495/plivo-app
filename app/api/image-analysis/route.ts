@@ -1,8 +1,5 @@
 // app/api/image-analysis/route.ts
 import { NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export const POST = async (req: Request) => {
   try {
@@ -16,29 +13,30 @@ export const POST = async (req: Request) => {
       );
     }
 
-    const buffer = Buffer.from(await imageFile.arrayBuffer());
-
-    const filePart = {
-      inlineData: {
-        data: buffer.toString("base64"),
-        mimeType: imageFile.type,
-      },
-    };
-
-    const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash-vision",
+    const response = await fetch("http://localhost:5000/caption", {
+      method: "POST",
+      body: formData,
     });
-    const prompt = "What is this image about? Give a detailed description.";
 
-    const result = await model.generateContent([prompt, filePart]);
-    const response = await result.response;
-    const description = response.text();
+    if (!response.ok) {
+      const errorData = await response.json();
+      return NextResponse.json(
+        { error: errorData.error },
+        { status: response.status }
+      );
+    }
 
-    return NextResponse.json({ description });
-  } catch (error: any) {
+    const data = await response.json();
+    return NextResponse.json(data);
+  } catch (error: unknown) {
+    // Corrected: `any` to `unknown`
     console.error("Error analyzing image:", error);
+    let errorMessage = "An unknown error occurred.";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
     return NextResponse.json(
-      { error: "Internal Server Error", details: error.message },
+      { error: "Internal Server Error", details: errorMessage },
       { status: 500 }
     );
   }

@@ -1,0 +1,6 @@
+# python-backend/requirements.txt
+Flask
+Pillow
+transformers
+torch
+flask_cors

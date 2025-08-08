@@ -42,8 +42,13 @@ export default function ImageAnalysis() {
 
       const data = await response.json();
       setDescription(data.description);
-    } catch (error: any) {
-      setDescription(`Error: ${error.message}`);
+    } catch (error: unknown) {
+      // Corrected: `any` to `unknown`
+      let errorMessage = "An unknown error occurred.";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      setDescription(`Error: ${errorMessage}`);
     } finally {
       setIsLoading(false);
     }

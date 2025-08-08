@@ -3,7 +3,6 @@
 import { signIn, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { FcGoogle } from "react-icons/fc"; // You might need to install react-icons
 
 export default function LoginPage() {

@@ -7,23 +7,30 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "npx prisma generate"
+    "postinstall": "npx prisma generate",
+    "python-dev": "python python-backend/server.py",
+    "dev:fullstack": "concurrently \"npm run dev\" \"npm run python-dev\""
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
     "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^6.13.0",
+    "@reduxjs/toolkit": "^2.8.2",
     "bcrypt": "^6.0.0",
     "cohere-ai": "^7.18.0",
+    "concurrently": "^9.2.0",
     "dotenv": "^17.2.1",
     "next": "15.4.6",
     "next-auth": "^4.24.11",
     "openai": "^5.12.1",
+    "pdf-lib": "^1.17.1",
     "pdf-parse": "^1.1.1",
     "pdf-to-text": "^0.0.7",
+    "pdfjs-dist": "^5.4.54",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-icons": "^5.5.0"
+    "react-icons": "^5.5.0",
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -31,12 +38,16 @@
     "@types/bcrypt": "^6.0.0",
     "@types/node": "^20",
     "@types/pdf-parse": "^1.1.5",
+    "@types/pdfjs-dist": "^2.10.377",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
     "prisma": "^6.13.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "webpack": "^5.101.0",
+    "webpack-cli": "^6.0.1",
+    "worker-loader": "^3.0.8"
   }
 }
